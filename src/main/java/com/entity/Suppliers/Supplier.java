@@ -12,6 +12,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,36 +23,45 @@ import java.time.LocalDateTime;
 @Table(
         name = "SUPPLIER",
         indexes = {
-            @Index(name = "IDX_SUPPLIER_DOCUMENT",
-                    columnList = "NU_SUPPLIER_DOCUMENT"),
                 @Index(name = "IDX_SUPPLIER_NAME",
                         columnList = "NM_RAZONSOCIAL"),
                     @Index(name = "IDX_SUPPLIER_DOC_TYPE",
                             columnList = "TP_SUPPLIER_DOCUMENT, NU_SUPPLIER_DOCUMENT")
-            }
+            },
+        uniqueConstraints =
+                {
+                    @UniqueConstraint(
+                            name = "UK_SUPPLIER_DOC",
+                            columnNames = {"TP_SUPPLIER_DOCUMENT", "NU_SUPPLIER_DOCUMENT"}
+                    )
+                }
         )
-public class Suppliers {
+public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name = "CD_SUPPLIER")
     private Long cdSupplier;
 
-    @Column (name = "NM_RAZONSOCIAL", nullable = false, length = 150)
+    @Column(name="CD_SUPPLIER_CODE", length=20, unique=true)
+    private String cdSupplierCode;
+
     @NotBlank
+    @Column (name = "NM_RAZONSOCIAL", nullable = false, length = 150)
+
     private String nmRazonSocial;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column (name = "TP_SUPPLIER", nullable = false)
-    @NotNull
-    private tpSupplier tpSupplier;
+    private TpSupplier tpSupplier;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column (name = "TP_SUPPLIER_DOCUMENT", nullable = false)
-    @NotNull
-    private tpDocument tpSupplierDocument;
+    private TpDocument tpSupplierDocument;
 
-    @Column (name = "NU_SUPPLIER_DOCUMENT", nullable = false, unique = true, length = 20)
     @NotBlank
+    @Column (name = "NU_SUPPLIER_DOCUMENT", nullable = false, length = 20)
     private String nuSupplierDocument;
 
     @Column (name = "REG_MERCHANT", length = 30)
@@ -60,6 +71,13 @@ public class Suppliers {
     @Column(name = "NU_CREDIT_DAYS")
     private Integer nuCreditDays;
 
+    @Column(name = "ST_ACTIVE", nullable = false)
+    private boolean stActive = true;
+
+    @Version
+    @Column(name = "NU_VERSION")
+    private Long version;
+
     @CreationTimestamp
     @Column(name = "DT_CREATION", updatable = false, nullable = false)
     private LocalDateTime dtCreation;
@@ -68,15 +86,28 @@ public class Suppliers {
     @Column(name = "DT_MODIFICATION", nullable = false)
     private LocalDateTime dtModification;
 
-    @Column(name = "ST_SUPPLIER", nullable = false)
-    private boolean active = true;
+    @OneToMany(
+            mappedBy = "supplier",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private List<SupplierContact> supplierContacts = new ArrayList<>();
 
-    public enum tpSupplier{
+    @OneToMany(
+            mappedBy = "supplier",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private List<SupplierAddress> supplierAddresses = new ArrayList<>();
+
+    public enum TpSupplier{
         PERSONA_FISICA,
         PERSONA_JURIDICA
     }
 
-    public enum tpDocument{
+    public enum TpDocument{
         CED,
         RNC,
         PASS

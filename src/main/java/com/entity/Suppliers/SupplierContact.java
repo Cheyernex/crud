@@ -1,9 +1,15 @@
 package com.entity.Suppliers;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -13,11 +19,15 @@ import lombok.*;
 @Table(
         name = "SUPPLIER_CONTACT",
         indexes = {
-                @Index(name = "IDX_SUPPLIER_CONTACT", columnList = "CD_SUPPLIER")
+                @Index(name = "IDX_SUPPLIER_CONTACT",
+                        columnList = "CD_SUPPLIER"),
+                    @Index(name = "IDX_SUPPLIER_MAIN_CONTACT",
+                            columnList = "CD_SUPPLIER, ST_MAIN"
+                )
         }
 )
 
-public class SuppliersContacts {
+public class SupplierContact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CD_CONTACT")
@@ -34,6 +44,7 @@ public class SuppliersContacts {
 
     @NotBlank
     @Column(name = "DS_PHONE", nullable = false, length = 20)
+    @Size(min = 7, max = 20)
     private String dsPhone;
 
     @NotBlank
@@ -43,8 +54,16 @@ public class SuppliersContacts {
     @Column(name = "ST_MAIN", nullable = false)
     private boolean stMain = false;
 
-    @Column(name = "ST_STATUS", nullable = false)
-    private boolean stStatus = true;
+    @Column(name = "ST_ACTIVE", nullable = false)
+    private boolean stActive = true;
+
+    @CreationTimestamp
+    @Column(name = "DT_CREATION", updatable = false)
+    private LocalDateTime dtCreation;
+
+    @UpdateTimestamp
+    @Column(name = "DT_MODIFICATION")
+    private LocalDateTime dtModification;
 
     /*
         FK -> SUPPLIER.CD_SUPPLIER
@@ -52,5 +71,6 @@ public class SuppliersContacts {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CD_SUPPLIER", nullable = false)
+    @JsonIgnore
     private Supplier supplier;
 }

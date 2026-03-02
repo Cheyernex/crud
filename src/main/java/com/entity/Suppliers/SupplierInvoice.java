@@ -1,4 +1,4 @@
 package com.entity.Suppliers;
 
-public class SupplierInvoices {
+public class SupplierInvoice {
 }
