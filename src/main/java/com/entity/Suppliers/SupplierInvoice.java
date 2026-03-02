@@ -94,6 +94,14 @@ public class SupplierInvoice {
     )
     private List<SupplierInvoiceDetail> supplierInvoiceDetails = new ArrayList<>();
 
+    @OneToMany(
+            mappedBy = "supplierInvoice",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private List<SupplierInvoiceStatus> supplierInvoiceStatuses = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CD_SUPPLIER", nullable = false)
     @JsonIgnore
