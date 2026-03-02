@@ -102,6 +102,14 @@ public class Supplier {
     )
     private List<SupplierAddress> supplierAddresses = new ArrayList<>();
 
+    @OneToMany(
+            mappedBy = "supplier",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private List<SupplierInvoice> supplierInvoices = new ArrayList<>();
+
     public enum TpSupplier{
         PERSONA_FISICA,
         PERSONA_JURIDICA

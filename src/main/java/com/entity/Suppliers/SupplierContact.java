@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -43,6 +44,7 @@ public class SupplierContact {
     private  String dsEmail;
 
     @NotBlank
+    @Pattern(regexp = "^[0-9+\\-() ]+$")
     @Column(name = "DS_PHONE", nullable = false, length = 20)
     @Size(min = 7, max = 20)
     private String dsPhone;
