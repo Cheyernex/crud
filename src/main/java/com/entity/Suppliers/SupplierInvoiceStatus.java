@@ -35,15 +35,15 @@ public class SupplierInvoiceStatus {
     @Column(name = "DS_OBSERVATION")
     private String dsObservation;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CD_INVOICE")
-    @JsonIgnore
-    private SupplierInvoice supplierInvoice;
-
     public enum TyStatus{
         PENDING,
         PARTIAL,
         PAID,
         CANCELLED
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CD_INVOICE")
+    @JsonIgnore
+    private SupplierInvoice supplierInvoice;
 }
