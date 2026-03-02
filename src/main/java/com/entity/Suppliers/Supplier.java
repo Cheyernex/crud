@@ -1,4 +1,4 @@
-package com.entity;
+package com.entity.Suppliers;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(
-        name = "suppliers",
+        name = "SUPPLIER",
         indexes = {
             @Index(name = "IDX_SUPPLIER_DOCUMENT",
                     columnList = "NU_SUPPLIER_DOCUMENT"),
@@ -68,7 +68,7 @@ public class Suppliers {
     @Column(name = "DT_MODIFICATION", nullable = false)
     private LocalDateTime dtModification;
 
-    @Column(name = "ST_SUPPLIER")
+    @Column(name = "ST_SUPPLIER", nullable = false)
     private boolean active = true;
 
     public enum tpSupplier{
