@@ -1,4 +1,4 @@
-package com.entity.Suppliers;
+package com.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -77,4 +77,5 @@ public class SupplierAddress {
     @JoinColumn(name = "CD_SUPPLIER", nullable = false)
     @JsonIgnore
     private Supplier supplier;
+
 }
