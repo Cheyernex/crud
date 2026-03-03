@@ -62,11 +62,6 @@ public class SupplierInvoiceDetail {
     @Column(name = "DT_MODIFICATION", nullable = false)
     private LocalDateTime dtModification;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CD_INVOICES", nullable = false)
-    @JsonIgnore
-    private SupplierInvoice supplierInvoice;
-
     public BigDecimal calculateLineTotal() {
         if (quantity == null || unitPrice == null) {
             return BigDecimal.ZERO;
@@ -81,5 +76,10 @@ public class SupplierInvoiceDetail {
     public void updateLineTotal(){
         this.lineTotal = calculateLineTotal();
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CD_INVOICE", nullable = false)
+    @JsonIgnore
+    private SupplierInvoice supplierInvoice;
 
 }

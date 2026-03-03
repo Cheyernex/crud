@@ -75,4 +75,5 @@ public class SupplierContact {
     @JoinColumn(name = "CD_SUPPLIER", nullable = false)
     @JsonIgnore
     private Supplier supplier;
+
 }

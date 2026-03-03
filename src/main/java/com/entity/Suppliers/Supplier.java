@@ -86,6 +86,17 @@ public class Supplier {
     @Column(name = "DT_MODIFICATION", nullable = false)
     private LocalDateTime dtModification;
 
+    public enum TpSupplier{
+        PERSONA_FISICA,
+        PERSONA_JURIDICA
+    }
+
+    public enum TpDocument{
+        CED,
+        RNC,
+        PASS
+    }
+
     @OneToMany(
             mappedBy = "supplier",
             cascade = CascadeType.ALL,
@@ -110,15 +121,12 @@ public class Supplier {
     )
     private List<SupplierInvoice> supplierInvoices = new ArrayList<>();
 
-    public enum TpSupplier{
-        PERSONA_FISICA,
-        PERSONA_JURIDICA
-    }
-
-    public enum TpDocument{
-        CED,
-        RNC,
-        PASS
-    }
+    @OneToMany(
+            mappedBy = "supplier",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private List<SupplierPayment> supplierPayments = new ArrayList<>();
 
 }

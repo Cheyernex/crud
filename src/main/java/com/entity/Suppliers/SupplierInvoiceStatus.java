@@ -46,4 +46,5 @@ public class SupplierInvoiceStatus {
     @JoinColumn(name = "CD_INVOICE")
     @JsonIgnore
     private SupplierInvoice supplierInvoice;
+
 }

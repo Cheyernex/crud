@@ -33,12 +33,12 @@ import java.util.List;
 public class SupplierInvoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CD_INVOICES")
-    private Long cdInvoices;
+    @Column(name = "CD_INVOICE")
+    private Long cdInvoice;
 
     @NotNull
-    @Column(name = "NU_INVOICES", nullable = false)
-    private Long nuInvoices;
+    @Column(name = "NU_INVOICE", nullable = false)
+    private Long nuInvoice;
 
     @NotNull
     @Column(name = "INVOICE_DATE", updatable = false, nullable = false)
@@ -58,10 +58,10 @@ public class SupplierInvoice {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "ST_INVOICES", nullable = false)
-    private TyStatus stInvoices;
+    @Column(name = "ST_INVOICE", nullable = false)
+    private TyStatus stInvoice;
 
-    @Column(name="CURRENCY")
+    @Column(name="CURRENCY",length = 3, nullable = false)
     private String currency;
 
     @Column(name = "TAX_AMOUNT")
@@ -86,24 +86,33 @@ public class SupplierInvoice {
         CANCELLED
     }
 
-    @OneToMany(
-            mappedBy = "supplierInvoice",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
-    private List<SupplierInvoiceDetail> supplierInvoiceDetails = new ArrayList<>();
-
-    @OneToMany(
-            mappedBy = "supplierInvoice",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
-    private List<SupplierInvoiceStatus> supplierInvoiceStatuses = new ArrayList<>();
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CD_SUPPLIER", nullable = false)
     @JsonIgnore
     private Supplier supplier;
+
+    @OneToMany(
+            mappedBy = "supplierInvoice",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private List<SupplierInvoiceDetail> supplierInvoiceDetail = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "supplierInvoice",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private List<SupplierInvoiceStatus> supplierInvoiceStatus = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "supplierInvoice",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private List<SupplierPaymentDetail> supplierPaymentDetails = new ArrayList<>();
+
 }
